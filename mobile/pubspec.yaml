@@ -1,0 +1,31 @@
+name: vpn_startup_app
+description: VPN client app (VLESS / Xray) with Flutter.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.2.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.6
+  # HTTP & state
+  http: ^1.1.0
+  provider: ^6.1.1
+  # Storage
+  shared_preferences: ^2.2.2
+  # VPN: use platform-specific VPN API or v2ray/xray core binding
+  # For demo we use a placeholder; production would use e.g. flutter_v2ray or custom channel to native Xray
+  # flutter_v2ray: ^x.x.x  # if available
+  # UI
+  flutter_animate: ^4.3.0
+  go_router: ^12.1.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.1
+
+flutter:
+  uses-material-design: true

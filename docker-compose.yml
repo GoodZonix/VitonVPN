@@ -1,0 +1,48 @@
+# VPN Startup — local dev stack
+# Backend API + PostgreSQL + Redis. VPN nodes (Xray) run on separate VPS.
+
+services:
+  api:
+    build:
+      context: ./backend
+      dockerfile: ../infra/docker/Dockerfile.backend
+    ports:
+      - "8080:8080"
+    environment:
+      DATABASE_URL: postgres://vpn:vpn@db:5432/vpndb?sslmode=disable
+      REDIS_URL: redis://redis:6379/0
+      JWT_SECRET: dev-secret-change-in-prod
+      HTTP_PORT: "8080"
+      TELEGRAM_BOT_USERNAME: "YViton_bot"
+      BOT_SECRET: "change-me-bot-secret"
+      CABINET_BASE_URL: "http://localhost:8080/token"
+      # Optional for real YooMoney QuickPay (P2P)
+      # YOOMONEY_RECEIVER: "4100XXXXXXXXXX"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: vpn
+      POSTGRES_PASSWORD: vpn
+      POSTGRES_DB: vpndb
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./backend/internal/database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vpn -d vpndb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+volumes:
+  pgdata:

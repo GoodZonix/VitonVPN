@@ -1,0 +1,47 @@
+.DS_Store
+
+# Secrets / env
+.env
+.env.*
+
+# IDE
+.idea/
+.vscode/
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+dist/
+*.log
+pnpm-lock.yaml
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Go
+bin/
+*.exe
+*.out
+bot/bot
+
+# Flutter / Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+build/
+ios/Pods/
+ios/.symlinks/
+macos/Pods/
+macos/.symlinks/
+android/.gradle/
+android/local.properties
+
+# Docker volumes (local)
+pgdata/
+
+# Cursor / local tooling
+.cursor/
+terminals/
+agent-transcripts/
