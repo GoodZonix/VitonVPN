@@ -27,8 +27,10 @@ type tgUpdate struct {
 }
 
 type tgResp struct {
-	OK     bool       `json:"ok"`
-	Result []tgUpdate `json:"result"`
+	OK          bool       `json:"ok"`
+	Result      []tgUpdate `json:"result"`
+	ErrorCode   int        `json:"error_code"`
+	Description string     `json:"description"`
 }
 
 type replyKeyboard struct {
@@ -154,6 +156,9 @@ func getUpdates(token string, offset int) ([]tgUpdate, error) {
 		return nil, err
 	}
 	if !out.OK {
+		if out.ErrorCode != 0 || out.Description != "" {
+			return nil, fmt.Errorf("telegram api not ok: %d %s", out.ErrorCode, out.Description)
+		}
 		return nil, fmt.Errorf("telegram api not ok")
 	}
 	return out.Result, nil
